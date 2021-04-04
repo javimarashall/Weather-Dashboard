@@ -1,12 +1,12 @@
 .jumbotron {
     color: white;
-    background-color: gray;
+    background-color: rgb(44, 126, 233);
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     text-align: center;
     font-size: 60px;
 }
 .container-stats {
-    background-color: lightgrey;
+    background-color: rgb(190, 222, 241);
 }
 .btn {
     background-color: lightskyblue;

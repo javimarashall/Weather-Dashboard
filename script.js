@@ -2,26 +2,124 @@
 // $('#myList a:first-child').tab('show') // Select first tab
 // $('#myList a:last-child').tab('show') // Select last tab
 // $('#myList a:nth-child(3)').tab('show') // Select third tab
+$(document).ready(function () {
+    //variables
+    var APIKey = "b7d72c9e1d3c51bb5697223f11eda7dd";
+    //var city = "tracy"//$(".form-control")
+    var cityStats = $(".container-stats");
+    var searchButton = $(".btn")
 
-//variables
-var APIKey = "b7d72c9e1d3c51bb5697223f11eda7dd";
-var city = "tracy";
-var cityStats = $(".container-stats")
+    function currentWeather(cityName) {
+        //The URL we need to query the database                             {city name},{state code}
+        var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=" + APIKey;
+        //run AJAX call to weather API 
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function (response) {
+            console.log(queryURL);
+            console.log("current: ",response);
 
-//The URL we need to query the database                             {city name},{state code}
-var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + APIKey;
+            $(cityStats).empty();
+            //Transfer to HTML
+            $(cityStats).append("<h2>" + response.name + " Weather Details" + new Date().toLocaleDateString() + "</h2>");
+            $(cityStats).append("<p> Temperature (F): " + response.main.temp + "</p>");
+            $(cityStats).append("<p> Humidity: " + response.main.humidity + "</p>");
+            $(cityStats).append("<p> Wind Speed: " + response.wind.speed + "</p>");
+            $(cityStats).append("<p><img src='http://openweathermap.org/img/w/" + response.weather[0].icon + ".png'/></p>");
+        }
+        );
+    }
 
-//run AJAX call to weather API 
-$.ajax({
-    url: queryURL,
-    method: "GET"
-}).then(function (response) {
-    console.log(queryURL);
-    console.log(response);
-//Transfer to HTML
-    $(cityStats).append("<h2>" + response.name + " Weather Details</h2>");
-    $(cityStats).append("<p> Temperature (F): " + response.main.temp + "</p>");
-    $(cityStats).append("<p> Humidity: " + response.main.humidity + "</p>");
-    $(cityStats).append("<p> Wind Speed: " + response.wind.speed + "</p>");
-} 
-    );
+    function foreCast(cityName) {
+        var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=imperial&appid=" + APIKey;
+        //run AJAX call for 5 day forecast API 
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function (response) {
+            console.log(queryURL);
+            console.log("forecast",response);
+
+            //filter data
+            var data = response.list.filter((listItem) => listItem.dt_txt.indexOf("15:00:00") > -1);
+
+            console.log(data);
+
+            let cards = "";
+            data.forEach(datum => {
+                cards += 
+                `
+                <div class="column col-2">
+                <div class="card">
+                <h4>${new Date(datum.dt_txt).toLocaleDateString()}</h4>
+                <p>Temperature F: ${datum.main.temp}</p>
+                <p>Humidity: ${datum.main.humidity}</p>
+                <p>Wind Speed: ${datum.wind.speed}</p>
+                <p><img src="http://openweathermap.org/img/w/${datum.weather[0].icon}.png"/></p>
+                </div>
+                </div>
+                `;
+            }); 
+            
+            $(".forecast-container").html(cards);
+
+        });
+    }
+
+    function createBtn(cityName) {
+        //create template
+        const template = `
+            <button class="city-btn col-sm-12">${cityName}</button>
+        `;
+        //add the html to the page
+        $(".search-result").append(template);
+    }
+
+    $(".search-result").on("click", ".city-btn", (event) => {
+        //currentWeather
+        currentWeather($(event.target).text());
+
+        //call the forecast function
+        foreCast($(event.target).text());
+    });
+
+    var data = JSON.parse(localStorage.getItem("data")) || [];
+    data.forEach(datum => {
+        createBtn(datum.input);
+    });
+
+    searchButton.on("click", function (event) {
+        //user Input
+        var userInput = $(event.target).closest(".input-group").find(".form-control").val();
+
+        //currentWeather
+        currentWeather(userInput);
+
+        //call the forecast function
+        foreCast(userInput);
+
+        createBtn(userInput);
+        window.localStorage.clear("data");
+        var removeEl = document.getElementById("searchResult");
+        removeEl.remove();
+
+        var searchResult = $(event.target).closest(".container-fluid").find("name")
+        //grab history
+        var data = JSON.parse(localStorage.getItem("data")) || [];
+        var dataEntry = {
+            input: userInput,
+            id: searchResult
+        };
+        data.push(dataEntry);
+        localStorage.setItem("data", JSON.stringify(data));
+    });
+
+
+
+
+
+
+
+
+});
