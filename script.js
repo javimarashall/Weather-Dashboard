@@ -22,7 +22,7 @@ $(document).ready(function () {
 
             $(cityStats).empty();
             //Transfer to HTML
-            $(cityStats).append("<h2>" + response.name + " Weather Details" + new Date().toLocaleDateString() + "</h2>");
+            $(cityStats).append("<h2>" + response.name + " Weather Details " + new Date().toLocaleDateString() + "</h2>");
             $(cityStats).append("<p> Temperature (F): " + response.main.temp + "</p>");
             $(cityStats).append("<p> Humidity: " + response.main.humidity + "</p>");
             $(cityStats).append("<p> Wind Speed: " + response.wind.speed + "</p>");
@@ -50,7 +50,7 @@ $(document).ready(function () {
             data.forEach(datum => {
                 cards += 
                 `
-                <div class="column col-2">
+                <div class="column col-md-2">
                 <div class="card">
                 <h4>${new Date(datum.dt_txt).toLocaleDateString()}</h4>
                 <p>Temperature F: ${datum.main.temp}</p>
@@ -69,8 +69,8 @@ $(document).ready(function () {
 
     function createBtn(cityName) {
         //create template
-        const template = `
-            <button class="city-btn col-sm-12">${cityName}</button>
+        const template = `              
+        <button type="button" class="city-btn btn-default btn-block">${cityName}</button>
         `;
         //add the html to the page
         $(".search-result").append(template);
@@ -101,8 +101,8 @@ $(document).ready(function () {
 
         createBtn(userInput);
         window.localStorage.clear("data");
-        var removeEl = document.getElementById("searchResult");
-        removeEl.remove();
+       // var removeEl = document.getElementById("searchResult");
+       // removeEl.remove();
 
         var searchResult = $(event.target).closest(".container-fluid").find("name")
         //grab history

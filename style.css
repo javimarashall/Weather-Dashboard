@@ -6,8 +6,26 @@
     font-size: 60px;
 }
 .container-stats {
-    background-color: rgb(190, 222, 241);
+    background-color: rgb(152, 212, 250);
+    font-size: 20px;
+   
+    padding-bottom: 10px;
 }
 .btn {
+    background-color: lightskyblue;    
+}
+.card{
+    background-color: rgb(144, 204, 241);
+    border: 2px solid rgb(3, 83, 133);
+    margin: 10px;
+    font-size: 19px;
+}
+body {
+    background-color: rgb(192, 228, 250);
+}
+.city-btn {
     background-color: lightskyblue;
+    margin-right: 10px;
+    display:inline-block;
+    text-align: center;
 }
