@@ -1,14 +1,12 @@
-// $('#myList a[href="#profile"]').tab('show') // Select tab by name
-// $('#myList a:first-child').tab('show') // Select first tab
-// $('#myList a:last-child').tab('show') // Select last tab
-// $('#myList a:nth-child(3)').tab('show') // Select third tab
+
 $(document).ready(function () {
     //variables
     var APIKey = "b7d72c9e1d3c51bb5697223f11eda7dd";
     //var city = "tracy"//$(".form-control")
     var cityStats = $(".container-stats");
     var searchButton = $(".btn")
-
+    var queryURLThree;
+    var queryURLFour;
     function currentWeather(cityName) {
         //The URL we need to query the database                             {city name},{state code}
         var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=" + APIKey;
@@ -27,9 +25,25 @@ $(document).ready(function () {
             $(cityStats).append("<p> Humidity: " + response.main.humidity + "</p>");
             $(cityStats).append("<p> Wind Speed: " + response.wind.speed + "</p>");
             $(cityStats).append("<p><img src='http://openweathermap.org/img/w/" + response.weather[0].icon + ".png'/></p>");
+            var queryURLThree = response.coord.lat;
+            var queryURLFour = response.coord.lon;
+            console.log(queryURLThree);
+            console.log(queryURLFour);
         }
         );
-    }
+    };
+
+    function violet(cityName){
+        var queryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + queryURLThree + "&lon=" + queryURLFour + "&appid=" + APIKey;
+       console.log("hi", queryURL);
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function (response) {
+            console.log(queryURL);
+            console.log("violet: ",response);
+    })
+    };
 
     function foreCast(cityName) {
         var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=imperial&appid=" + APIKey;
@@ -100,9 +114,9 @@ $(document).ready(function () {
         foreCast(userInput);
 
         createBtn(userInput);
-       window.localStorage.clear("data");
-       var removeEl = document.getElementById("search-result");
-       removeEl.remove();
+    //    window.localStorage.clear("data");
+    //    var removeEl = document.getElementById("search-result");
+    //    removeEl.remove();
 
         var searchResult = $(event.target).closest(".container-fluid").find("name")
         //grab history
