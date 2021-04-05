@@ -31,3 +31,7 @@ https://github.com/javimarashall/Weather-Dashboard
 
 ## Deploy Link
 https://javimarashall.github.io/Weather-Dashboard/
+
+## Personal Links
+[Github](https://github.com/javimarashall)<br>
+[Linkedin](https://www.linkedin.com/in/javier-mondragon-7b471719b/)

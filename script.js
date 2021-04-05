@@ -100,9 +100,9 @@ $(document).ready(function () {
         foreCast(userInput);
 
         createBtn(userInput);
-       // window.localStorage.clear("data");
-       // var removeEl = document.getElementById("searchResult");
-       // removeEl.remove();
+       window.localStorage.clear("data");
+       var removeEl = document.getElementById("search-result");
+       removeEl.remove();
 
         var searchResult = $(event.target).closest(".container-fluid").find("name")
         //grab history
