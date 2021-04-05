@@ -5,8 +5,8 @@ $(document).ready(function () {
     //var city = "tracy"//$(".form-control")
     var cityStats = $(".container-stats");
     var searchButton = $(".btn")
-    var queryURLThree;
-    var queryURLFour;
+    var latitude;
+    var longitude;
     function currentWeather(cityName) {
         //The URL we need to query the database                             {city name},{state code}
         var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=" + APIKey;
@@ -16,7 +16,7 @@ $(document).ready(function () {
             method: "GET"
         }).then(function (response) {
             console.log(queryURL);
-            console.log("current: ",response);
+            console.log("current: ", response);
 
             $(cityStats).empty();
             //Transfer to HTML
@@ -25,25 +25,41 @@ $(document).ready(function () {
             $(cityStats).append("<p> Humidity: " + response.main.humidity + "</p>");
             $(cityStats).append("<p> Wind Speed: " + response.wind.speed + "</p>");
             $(cityStats).append("<p><img src='http://openweathermap.org/img/w/" + response.weather[0].icon + ".png'/></p>");
-            var queryURLThree = response.coord.lat;
-            var queryURLFour = response.coord.lon;
-            console.log(queryURLThree);
-            console.log(queryURLFour);
+            //variables to get the latitude and longitude
+            latitude = response.coord.lat;
+            longitude = response.coord.lon;
+            console.log(latitude);
+            console.log(longitude);
+
+           
+            var queryURL = "https://api.openweathermap.org/data/2.5/onecall?lat="+latitude+"&lon="+longitude+"&appid="+APIKey;
+            console.log("hi", queryURL);
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).then(function (response) {
+                console.log(queryURL);
+                console.log("violet: ", response);
+                $(cityStats).append("<p> UV Index: " + response.current.uvi + "</p>");
+            });
+        
         }
         );
+       
+        
     };
-
-    function violet(cityName){
-        var queryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + queryURLThree + "&lon=" + queryURLFour + "&appid=" + APIKey;
-       console.log("hi", queryURL);
+    
+    //function violet(cityName) {
+        var queryURL = "https://api.openweathermap.org/data/2.5/onecall?lat="+latitude+"&lon="+longitude+"&appid="+APIKey;
+        console.log("hi", queryURL);
         $.ajax({
             url: queryURL,
             method: "GET"
         }).then(function (response) {
             console.log(queryURL);
-            console.log("violet: ",response);
-    })
-    };
+            console.log("violet: ", response);
+        });
+    
 
     function foreCast(cityName) {
         var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=imperial&appid=" + APIKey;
@@ -53,7 +69,7 @@ $(document).ready(function () {
             method: "GET"
         }).then(function (response) {
             console.log(queryURL);
-            console.log("forecast",response);
+            console.log("forecast", response);
 
             //filter data
             var data = response.list.filter((listItem) => listItem.dt_txt.indexOf("03:00:00") > -1);
@@ -62,8 +78,8 @@ $(document).ready(function () {
 
             let cards = "";
             data.forEach(datum => {
-                cards += 
-                `
+                cards +=
+                    `
                 <div class="column col-md-2">
                 <div class="card">
                 <h4>${new Date(datum.dt_txt).toLocaleDateString()}</h4>
@@ -74,8 +90,8 @@ $(document).ready(function () {
                 </div>
                 </div>
                 `;
-            }); 
-            
+            });
+
             $(".forecast-container").html(cards);
 
         });
@@ -114,9 +130,9 @@ $(document).ready(function () {
         foreCast(userInput);
 
         createBtn(userInput);
-    //    window.localStorage.clear("data");
-    //    var removeEl = document.getElementById("search-result");
-    //    removeEl.remove();
+        //    window.localStorage.clear("data");
+        //    var removeEl = document.getElementById("search-result");
+        //    removeEl.remove();
 
         var searchResult = $(event.target).closest(".container-fluid").find("name")
         //grab history
