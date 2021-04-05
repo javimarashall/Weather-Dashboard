@@ -42,7 +42,7 @@ $(document).ready(function () {
             console.log("forecast",response);
 
             //filter data
-            var data = response.list.filter((listItem) => listItem.dt_txt.indexOf("15:00:00") > -1);
+            var data = response.list.filter((listItem) => listItem.dt_txt.indexOf("03:00:00") > -1);
 
             console.log(data);
 
@@ -53,7 +53,7 @@ $(document).ready(function () {
                 <div class="column col-md-2">
                 <div class="card">
                 <h4>${new Date(datum.dt_txt).toLocaleDateString()}</h4>
-                <p>Temperature F: ${datum.main.temp}</p>
+                <p>Temperature F: ${datum.main.temp_max}</p>
                 <p>Humidity: ${datum.main.humidity}</p>
                 <p>Wind Speed: ${datum.wind.speed}</p>
                 <p><img src="http://openweathermap.org/img/w/${datum.weather[0].icon}.png"/></p>
@@ -100,7 +100,7 @@ $(document).ready(function () {
         foreCast(userInput);
 
         createBtn(userInput);
-        window.localStorage.clear("data");
+       // window.localStorage.clear("data");
        // var removeEl = document.getElementById("searchResult");
        // removeEl.remove();
 
