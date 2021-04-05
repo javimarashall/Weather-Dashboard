@@ -1,7 +1,7 @@
 # Weather-Dashboard
 
 ## Site
-[!Site](./assets/site.png)
+![Site](./assets/site.png)
 
 ## Technologies Used
 - HTML - Used to write the code for making the website
