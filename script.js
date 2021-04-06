@@ -7,6 +7,7 @@ $(document).ready(function () {
     var searchButton = $(".btn")
     var latitude;
     var longitude;
+    var uvIndex = $("h6")
     function currentWeather(cityName) {
         //The URL we need to query the database                             {city name},{state code}
         var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=" + APIKey;
@@ -31,7 +32,7 @@ $(document).ready(function () {
             console.log(latitude);
             console.log(longitude);
 
-           
+           //UV Index
             var queryURL = "https://api.openweathermap.org/data/2.5/onecall?lat="+latitude+"&lon="+longitude+"&appid="+APIKey;
             console.log("hi", queryURL);
             $.ajax({
@@ -41,6 +42,15 @@ $(document).ready(function () {
                 console.log(queryURL);
                 console.log("violet: ", response);
                 $(cityStats).append("<p> UV Index: " + response.current.uvi + "</p>");
+                uvColor = response.current.uvi;
+                //UV Index color
+                if (uvColor<=2){
+                    $(uvIndex).addClass("uv-index");
+                }else if (3<=uvColor<=5) {
+                    $(uvIndex).addClass("uv-index-two");
+                }else if (6<=uvColor<=7) {
+                    $(uvIndex).addClass("uv-index-three");
+                }
             });
         
         }

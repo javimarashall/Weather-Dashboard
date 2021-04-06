@@ -29,3 +29,12 @@ body {
     display:inline-block;
     text-align: center;
 }
+.uv-index {
+    background-color: green;
+}
+.uv-index-two {
+    background-color: yellow;
+}
+.uv-index-three {
+    background-color: red;
+}
